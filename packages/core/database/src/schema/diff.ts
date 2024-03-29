@@ -104,26 +104,30 @@ export default (db: Database) => {
       changes.push('referencedTable');
     }
 
-    if (_.isNil(oldForeignKey.onDelete) || _.toUpper(oldForeignKey.onDelete) === 'NO ACTION') {
-      if (
-        !_.isNil(foreignKey.onDelete) &&
-        _.toUpper(oldForeignKey.onDelete ?? '') !== 'NO ACTION'
-      ) {
+    if('onDelete' in oldForeignKey && 'onDelete' in foreignKey){
+      if (_.isNil(oldForeignKey.onDelete) || _.toUpper(oldForeignKey.onDelete) === 'NO ACTION') {
+        if (
+          !_.isNil(foreignKey.onDelete) &&
+          _.toUpper(oldForeignKey.onDelete ?? '') !== 'NO ACTION'
+        ) {
+          changes.push('onDelete');
+        }
+      } else if (_.toUpper(oldForeignKey.onDelete) !== _.toUpper(foreignKey.onDelete ?? '')) {
         changes.push('onDelete');
       }
-    } else if (_.toUpper(oldForeignKey.onDelete) !== _.toUpper(foreignKey.onDelete ?? '')) {
-      changes.push('onDelete');
     }
 
-    if (_.isNil(oldForeignKey.onUpdate) || _.toUpper(oldForeignKey.onUpdate) === 'NO ACTION') {
-      if (
-        !_.isNil(foreignKey.onUpdate) &&
-        _.toUpper(oldForeignKey.onUpdate ?? '') !== 'NO ACTION'
-      ) {
+    if('onUpdate' in oldForeignKey && 'onUpdate' in foreignKey){
+      if (_.isNil(oldForeignKey.onUpdate) || _.toUpper(oldForeignKey.onUpdate) === 'NO ACTION') {
+        if (
+          !_.isNil(foreignKey.onUpdate) &&
+          _.toUpper(oldForeignKey.onUpdate ?? '') !== 'NO ACTION'
+        ) {
+          changes.push('onUpdate');
+        }
+      } else if (_.toUpper(oldForeignKey.onUpdate) !== _.toUpper(foreignKey.onUpdate ?? '')) {
         changes.push('onUpdate');
       }
-    } else if (_.toUpper(oldForeignKey.onUpdate) !== _.toUpper(foreignKey.onUpdate ?? '')) {
-      changes.push('onUpdate');
     }
 
     return {

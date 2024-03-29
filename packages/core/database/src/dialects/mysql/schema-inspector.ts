@@ -205,7 +205,7 @@ export default class MysqlSchemaInspector implements SchemaInspector {
           columns: [index.Column_name],
           name: index.Key_name,
         };
-        if (!index.Non_unique) {
+        if (!index.Non_unique || index.Non_unique === '0') {
           indexInfo.type = 'unique';
         }
 
